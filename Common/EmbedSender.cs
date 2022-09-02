@@ -82,7 +82,7 @@ public class EmbedSender : IEmbedSender
             return;
         }
 
-        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()))
+        foreach (var channel in cherry.TextChannels.Where(x => x.IsStandardTextChannel()))
         {
             try
             {
@@ -104,7 +104,7 @@ public class EmbedSender : IEmbedSender
             return;
         }
 
-        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()))
+        foreach (var channel in cherry.TextChannels.Where(x => x.IsStandardTextChannel()))
         {
             try
             {
