@@ -1,5 +1,6 @@
 ﻿namespace Cherry.Common;
 
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
@@ -83,6 +84,9 @@ public static class Extensions
     }
 
     public static bool IsDMChannel(this ISocketMessageChannel channel) => channel is SocketDMChannel;
+
+    public static bool IsStandardTextChannel(this ISocketMessageChannel channel)
+        => channel.GetChannelType() is not null and ChannelType.Text;
 
     public static (T, IEnumerable<T>) GetFirstAndRemainder<T>(this IEnumerable<T> sequence)
     {

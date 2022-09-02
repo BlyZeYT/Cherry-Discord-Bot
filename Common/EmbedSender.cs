@@ -59,7 +59,7 @@ public class EmbedSender : IEmbedSender
             .WithName($"Hello {guild.Name}"))
             .Build();
 
-        foreach (var channel in guild.TextChannels)
+        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()))
         {
             try
             {
