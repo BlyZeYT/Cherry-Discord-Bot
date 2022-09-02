@@ -76,13 +76,25 @@ public class OwnerModule : CherryModuleBase
             return;
         }
 
+        int guildsCount = 0;
         foreach (var guild in _client.Guilds)
         {
             if (guild is not null)
             {
-                await _embed.SendNewsAsync(guild.DefaultChannel, splitted[0], splitted[1]);
+                foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()).OrderBy(x => x.Position))
+                {
+                    try
+                    {
+                        await _embed.SendNewsAsync(channel, splitted[0], splitted[1]);
+                        guildsCount++;
+                        break;
+                    }
+                    catch (Exception) { continue; }
+                }
             }
         }
+
+        await ReplyAsync($"The message was successfully sent to {guildsCount} out of {Context.Client.Guilds.Count} guilds \\🍒");
     }
 
     [Command("checkdatabaseconnection", RunMode = RunMode.Async)]
