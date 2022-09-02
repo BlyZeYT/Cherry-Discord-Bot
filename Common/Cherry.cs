@@ -18,10 +18,10 @@ public static class Cherry
 
     public const string INVITATION_DENIED_ID = "DeniedInvitation";
 
-    public const double MIN_VOLUME = 0;
-    public const double STANDARD_VOLUME = 1;
-    public const double MAX_VOLUME = 2;
-    public const double EARRAPE_VOLUME = 5;
+    public const ushort MIN_VOLUME = 0;
+    public const ushort STANDARD_VOLUME = 100;
+    public const ushort MAX_VOLUME = 200;
+    public const ushort EARRAPE_VOLUME = 500;
 
     public static readonly IFilter EmptyFilter;
 

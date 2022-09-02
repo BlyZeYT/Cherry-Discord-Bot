@@ -461,7 +461,7 @@ public class MusicModule : CherryModuleBase
 
         if (string.IsNullOrWhiteSpace(volumeStr))
         {
-            switch (((double)player.Volume) * 100)
+            switch (player.Volume)
             {
                 case 0:
                     await ReplyAsync("I'm currently **muted** \\🔇");
@@ -472,7 +472,7 @@ public class MusicModule : CherryModuleBase
                     break;
 
                 default:
-                    await ReplyAsync($"I'm currently on **{player.Volume}** {(player.Volume >= (int)(Cherry.STANDARD_VOLUME * 100) ? "\\🔊" : "\\🔉")}");
+                    await ReplyAsync($"I'm currently on **{player.Volume}** {(player.Volume >= Cherry.STANDARD_VOLUME ? "\\🔊" : "\\🔉")}");
                     break;
             }
 
@@ -481,13 +481,11 @@ public class MusicModule : CherryModuleBase
 
         if (volumeStr.Equals("earrape", StringComparison.OrdinalIgnoreCase)) volumeStr = "500";
 
-        if (!int.TryParse(volumeStr, out var volumeVal))
+        if (!ushort.TryParse(volumeStr, out var volume))
         {
             await ReplyAsync("Please enter a valid number");
             return;
         }
-
-        var volume = ((double)volumeVal) / 100;
 
         if (volume is < Cherry.MIN_VOLUME or > Cherry.MAX_VOLUME and not Cherry.EARRAPE_VOLUME)
         {
@@ -495,9 +493,9 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        await player.ApplyFilterAsync(Cherry.EmptyFilter, volume);
+        await player.UpdateVolumeAsync(volume);
 
-        switch (((double)player.Volume) * 100)
+        switch (player.Volume)
         {
             case 0:
                 await ReplyAsync("**Muted** \\🔇");
@@ -508,7 +506,7 @@ public class MusicModule : CherryModuleBase
                 break;
 
             default:
-                await ReplyAsync($"My volume is now set to **{player.Volume}** {(player.Volume >= (int)(Cherry.STANDARD_VOLUME * 100) ? "\\🔊" : "\\🔉")}");
+                await ReplyAsync($"My volume is now set to **{player.Volume}** {(player.Volume >= Cherry.STANDARD_VOLUME ? "\\🔊" : "\\🔉")}");
                 break;
         }
     }
@@ -617,7 +615,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        await player.ApplyFilterAsync(Cherry.EmptyFilter, ((double)player.Volume) / 100);
+        await player.ApplyFilterAsync(Cherry.EmptyFilter);
         await ReplyAsync("Removed all filters");
     }
 
@@ -664,7 +662,7 @@ public class MusicModule : CherryModuleBase
             _ => Cherry.NightcoreFilterMedium,
         };
 
-        await player.ApplyFilterAsync(filter, ((double)player.Volume) / 100);
+        await player.ApplyFilterAsync(filter);
         await ReplyAsync("Applied nightcore filter on **"
             + (level is "" ? "MEDIUM" : level.ToUpper()) + "**");
     }
@@ -712,7 +710,7 @@ public class MusicModule : CherryModuleBase
             _ => Cherry.DaycoreFilterMedium,
         };
 
-        await player.ApplyFilterAsync(filter, ((double)player.Volume) / 100);
+        await player.ApplyFilterAsync(filter);
         await ReplyAsync("Applied daycore filter on **"
             + (level is "" ? "MEDIUM" : level.ToUpper()) + "**");
     }
@@ -760,7 +758,7 @@ public class MusicModule : CherryModuleBase
             _ => Cherry.SmoothingFilterMedium,
         };
 
-        await player.ApplyFilterAsync(filter, ((double)player.Volume) / 100);
+        await player.ApplyFilterAsync(filter);
         await ReplyAsync("Applied smoothing filter on **"
             + (level is "" ? "MEDIUM" : level.ToUpper()) + "**");
     }
@@ -800,7 +798,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        await player.ApplyFilterAsync(Cherry.EightDFilter, ((double)player.Volume) / 100);
+        await player.ApplyFilterAsync(Cherry.EightDFilter);
         await ReplyAsync("Applied 8D filter");
     }
 
