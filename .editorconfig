@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CA2254: Vorlage muss ein statischer Ausdruck sein
+dotnet_diagnostic.CA2254.severity = silent
+
+# CA1822: Member als statisch markieren
+dotnet_diagnostic.CA1822.severity = silent
+
+# IDE0030: COALESCE-Ausdruck verwenden
+dotnet_diagnostic.IDE0030.severity = silent
