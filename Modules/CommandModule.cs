@@ -34,8 +34,7 @@ public class CommandModule : CherryModuleBase
     [Command("contact", RunMode = RunMode.Async)]
     [Summary("Contact my creator to submit ideas or report issues and bugs")]
     [Remarks("contact")]
-    [RequireContext(ContextType.Guild)]
-    [RequireContext(ContextType.DM)]
+    [RequireContext(ContextType.Guild | ContextType.DM)]
     public async Task Contact()
     {
         var couldSend = await _embed.TrySendContactDMAsync(Context.User);
