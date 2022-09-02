@@ -1,5 +1,6 @@
 ﻿namespace Cherry;
 
+using Cherry.Common;
 using Discord;
 using Discord.Addons.Hosting;
 using Discord.Commands;
@@ -39,22 +40,28 @@ class Program
                     GatewayIntents = GatewayIntents.All
                 };
 
-                config.Token = context.Configuration["token"] ?? "";
+                config.Token = context.Configuration["token"]!;
             })
             .UseCommandService((context, config) => config = new CommandServiceConfig
             {
                 CaseSensitiveCommands = false,
                 LogLevel = LogSeverity.Error
             })
-            .ConfigureServices((_, services) => services.AddHostedService<CommandHandler>()
-                .AddLavaNode(x =>
+            .ConfigureServices((_, services) =>
+            {
+                services.AddSingleton<IDatabase, Database>();
+                services.AddSingleton<IEmbedSender, EmbedSender>();
+                services.AddSingleton<IMusicHelper, MusicHelper>();
+                services.AddHostedService<CommandHandler>();
+                services.AddLavaNode(x =>
                 {
                     x.SelfDeaf = true;
                     x.EnableResume = true;
                     x.ReconnectDelay = TimeSpan.FromSeconds(1);
                     x.LogSeverity = LogSeverity.Error;
                     x.BufferSize = 2048;
-                }))
+                });
+            })
             .UseConsoleLifetime();
 
         var host = builder.Build();

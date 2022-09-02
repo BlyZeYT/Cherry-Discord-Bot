@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Victoria;
 
-public class EmbedSender
+public class EmbedSender : IEmbedSender
 {
     private readonly IConfiguration _config;
     private readonly IDatabase _database;
