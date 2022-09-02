@@ -52,13 +52,20 @@ public class EmbedSender : IEmbedSender
 
     private async Task SendWelcomeAsync(SocketGuild guild)
     {
-        var builder = new CherryEmbedBuilder()
+        try
+        {
+            var builder = new CherryEmbedBuilder()
             .WithDescription($"My prefix is **{_config["prefix"]}**\n**{_config["prefix"]}help** to get all my commands!\n**{_config["prefix"]}prefix** to change my prefix!")
             .WithAuthor(author => author
             .WithIconUrl(guild.IconUrl)
-            .WithName($"Hello {guild.Name}!"));
+            .WithName($"Hello {guild.Name}"));
 
-        await guild.DefaultChannel.SendMessageAsync(embed: builder.Build());
+            await guild.DefaultChannel.SendMessageAsync(embed: builder.Build());
+        }
+        catch (Exception)
+        {
+            _logger.LogError("Couldn't send the welcome message");
+        }
     }
 
     public async Task JoinedGuildAsync(SocketGuild guild)
