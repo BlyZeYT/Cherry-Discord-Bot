@@ -200,9 +200,9 @@ public class EmbedSender : IEmbedSender
 
         var remainedQueue = remainedQueueEnumerable.ToArray();
         
-        if (remainedQueue.Length > 1)
+        if (remainedQueue.Length > 0)
         {
-            if (remainedQueue.Length < length) length = remainedQueue.Length;
+            if (remainedQueue.Length < length || length == -1) length = remainedQueue.Length;
 
             for (var i = 0; i < length; i++)
             {

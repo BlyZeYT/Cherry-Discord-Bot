@@ -304,7 +304,7 @@ public class MusicModule : CherryModuleBase
 
     [Command("queue", RunMode = RunMode.Async)]
     [Summary("Shows the tracks in queue")]
-    [Remarks("queue <length>")]
+    [Remarks("queue [length]")]
     [RequireContext(ContextType.Guild)]
     public async Task Queue([Remainder] string queuePos = "")
     {
@@ -322,11 +322,16 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        if (!int.TryParse(queuePos, out var queueNumber) || queueNumber < 1)
+        int queueNumber;
+        if (!string.IsNullOrWhiteSpace(queuePos))
         {
-            await ReplyAsync("Please enter a valid number");
-            return;
+            if (!int.TryParse(queuePos, out queueNumber) || queueNumber < 1)
+            {
+                await ReplyAsync("Please enter a valid number");
+                return;
+            }
         }
+        else queueNumber = -1;
 
         LavaTrack[] fullQueue = player.Queue.Prepend(player.Track).ToArray();
 
