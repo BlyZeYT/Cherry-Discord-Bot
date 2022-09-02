@@ -19,8 +19,7 @@ public class CommandModule : CherryModuleBase
     [Command("help", RunMode = RunMode.Async)]
     [Summary("Shows the command list or specific information about a command")]
     [Remarks("help [command]")]
-    [RequireContext(ContextType.Guild)]
-    [RequireContext(ContextType.DM)]
+    [RequireContext(ContextType.Guild | ContextType.DM)]
     public async Task Help([Remainder] string specificInfo = "")
     {
         var couldSend = await _embed.TrySendHelpDMAsync(Context.User, specificInfo);
@@ -51,8 +50,7 @@ public class CommandModule : CherryModuleBase
     [Command("stats", RunMode = RunMode.Async)]
     [Summary("Get the stats of the bot")]
     [Remarks("stats")]
-    [RequireContext(ContextType.Guild)]
-    [RequireContext(ContextType.DM)]
+    [RequireContext(ContextType.Guild | ContextType.DM)]
     public async Task Stats() => await _embed.SendBotStatsAsync((ITextChannel)Context.Channel);
 
     [Command("info", RunMode = RunMode.Async)]
@@ -73,16 +71,14 @@ public class CommandModule : CherryModuleBase
     [Alias("botinfo")]
     [Summary("Get information about the bot")]
     [Remarks("bot")]
-    [RequireContext(ContextType.Guild)]
-    [RequireContext(ContextType.DM)]
+    [RequireContext(ContextType.Guild | ContextType.DM)]
     public async Task BotInfo() => await _embed.SendCherryInfoAsync((ITextChannel)Context.Channel, Context.Guild);
 
     [Command("reddit", RunMode = RunMode.Async)]
     [Alias("meme")]
     [Summary("Get a random reddit meme or choose a subreddit")]
     [Remarks("reddit [subreddit]")]
-    [RequireContext(ContextType.Guild)]
-    [RequireContext(ContextType.DM)]
+    [RequireContext(ContextType.Guild | ContextType.DM)]
     public async Task Reddit([Remainder] string subreddit = "")
     {
         using (var client = new HttpClient())
@@ -120,7 +116,6 @@ public class CommandModule : CherryModuleBase
     [Command("coinflip", RunMode = RunMode.Async)]
     [Summary("Flip a coin")]
     [Remarks("coinflip")]
-    [RequireContext(ContextType.Guild)]
-    [RequireContext(ContextType.DM)]
+    [RequireContext(ContextType.Guild | ContextType.DM)]
     public async Task Coinflip() => await _embed.SendCoinflipAsync((ITextChannel)Context.Channel, new Random().Next(0, 2) == 1);
 }

@@ -23,6 +23,7 @@ public class OwnerModule : CherryModuleBase
     [Command("getserver", RunMode = RunMode.Async)]
     [Remarks("getserver [guildId]")]
     [RequireOwner]
+    [RequireContext(ContextType.DM | ContextType.Guild)]
     public async Task GetServer([Remainder] string guildIdStr = "")
     {
         if (string.IsNullOrWhiteSpace(guildIdStr))
@@ -58,6 +59,7 @@ public class OwnerModule : CherryModuleBase
     [Command("sendtoallservers", RunMode = RunMode.Async)]
     [Remarks("sendtoallservers <title|message>")]
     [RequireOwner]
+    [RequireContext(ContextType.DM | ContextType.Guild)]
     public async Task SendToAllServers([Remainder] string fullText = "")
     {
         if (string.IsNullOrWhiteSpace(fullText))
@@ -86,6 +88,7 @@ public class OwnerModule : CherryModuleBase
     [Command("checkdatabaseconnection", RunMode = RunMode.Async)]
     [Remarks("checkdatabaseconnection")]
     [RequireOwner]
+    [RequireContext(ContextType.DM | ContextType.Guild)]
     public async Task CheckDatabaseConnection()
         => await ReplyAsync($"The connection was established in **{await _database.CheckConnectionAsync()} ms**");
 }
