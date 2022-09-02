@@ -73,7 +73,17 @@ public class CommandHandler : DiscordClientService
     {
         Cherry.Server = _client.GetGuild(Cherry.GUILD_ID);
 
-        new BackgroundTimer().Start(TimeSpan.FromSeconds(30), () => Cherry.Server = _client.GetGuild(Cherry.GUILD_ID));
+        new BackgroundTimer().Start(TimeSpan.FromSeconds(30), () =>
+        {
+            var guild = _client.GetGuild(Cherry.GUILD_ID);
+
+            if (guild is null)
+            {
+                _logger.LogCherryServerError();
+            }
+
+            Cherry.Server = guild;
+        });
 
         return Task.CompletedTask;
     }

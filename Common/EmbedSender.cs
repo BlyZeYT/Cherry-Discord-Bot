@@ -59,7 +59,7 @@ public class EmbedSender : IEmbedSender
             .WithName($"Hello {guild.Name}"))
             .Build();
 
-        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()))
+        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()).OrderBy(x => x.Position))
         {
             try
             {
@@ -82,11 +82,11 @@ public class EmbedSender : IEmbedSender
             return;
         }
 
-        foreach (var channel in cherry.TextChannels.Where(x => x.IsStandardTextChannel()))
+        foreach (var channel in cherry.TextChannels.Where(x => x.IsStandardTextChannel()).OrderBy(x => x.Position))
         {
             try
             {
-                await channel.SendMessageAsync(@"Joined a new server \🥳");
+                await channel.SendMessageAsync(@"**Joined a new server** \🥳");
                 await SendServerInfoAsync(channel, guild);
                 break;
             }
@@ -104,11 +104,11 @@ public class EmbedSender : IEmbedSender
             return;
         }
 
-        foreach (var channel in cherry.TextChannels.Where(x => x.IsStandardTextChannel()))
+        foreach (var channel in cherry.TextChannels.Where(x => x.IsStandardTextChannel()).OrderBy(x => x.Position))
         {
             try
             {
-                await channel.SendMessageAsync(@"Lefted a server \🥲");
+                await channel.SendMessageAsync(@"**Lefted a server** \🥲");
                 await SendServerInfoAsync(channel, guild);
                 break;
             }
