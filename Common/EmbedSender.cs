@@ -121,10 +121,10 @@ public class EmbedSender : IEmbedSender
         var builder = new CherryEmbedBuilder()
             .WithTitle($"Information about {guild.Name}")
             .WithThumbnailUrl($"{guild.IconUrl}")
-            .AddField("Created at", guild.CreatedAt.ToString("dd/MM/yyyy"), true)
+            .AddField("Created at", guild.CreatedAt.ToString("dd/MM/yyyy"))
             .AddField("Members", guild.MemberCount)
-            .AddField("Prefix", await _database.GetPrefixAsync(guild.Id) ?? _config["prefix"], true)
-            .AddField("Online", guild.Users.Count(x => x.Status is not UserStatus.Offline), true);
+            .AddField("Prefix", await _database.GetPrefixAsync(guild.Id) ?? _config["prefix"])
+            .AddField("Online", guild.Users.Count(x => x.Status is not UserStatus.Offline));
 
         await channel.SendMessageAsync(embed: builder.Build());
     }
@@ -295,10 +295,10 @@ public class EmbedSender : IEmbedSender
         var builder = new CherryEmbedBuilder()
             .WithThumbnailUrl(user.GetAvatarUrl(ImageFormat.Auto, 2048) ?? user.GetDefaultAvatarUrl())
             .WithTitle("Information about " + user.Username)
-            .AddField("ID", user.Id, true)
-            .AddField("Username", user.Username, true)
+            .AddField("ID", user.Id)
+            .AddField("Username", user.Username)
             .AddField("Created at", user.CreatedAt.ToString("dd.MM.yyyy"))
-            .AddField("Joined at", ((SocketGuildUser)user).JoinedAt.HasValue ? ((SocketGuildUser)user).JoinedAt!.Value.ToString("dd.MM.yyyy") : "", true)
+            .AddField("Joined at", ((SocketGuildUser)user).JoinedAt.HasValue ? ((SocketGuildUser)user).JoinedAt!.Value.ToString("dd.MM.yyyy") : "")
             .AddField("Roles", string.Join(' ', ((SocketGuildUser)user).Roles.Select(x => x.Mention)));
 
         await channel.SendMessageAsync(embed: builder.Build());
