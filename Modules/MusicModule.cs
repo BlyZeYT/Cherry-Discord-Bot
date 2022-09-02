@@ -461,7 +461,7 @@ public class MusicModule : CherryModuleBase
 
         if (string.IsNullOrWhiteSpace(volumeStr))
         {
-            switch (player.Volume)
+            switch (((double)player.Volume) * 100)
             {
                 case 0:
                     await ReplyAsync("I'm currently **muted** \\🔇");
@@ -472,7 +472,7 @@ public class MusicModule : CherryModuleBase
                     break;
 
                 default:
-                    await ReplyAsync($"I'm currently on **{player.Volume}** {(player.Volume >= Cherry.STANDARD_VOLUME * 100 ? "\\🔊" : "\\🔉")}");
+                    await ReplyAsync($"I'm currently on **{player.Volume}** {(player.Volume >= (int)(Cherry.STANDARD_VOLUME * 100) ? "\\🔊" : "\\🔉")}");
                     break;
             }
 
@@ -497,7 +497,7 @@ public class MusicModule : CherryModuleBase
 
         await player.ApplyFilterAsync(Cherry.EmptyFilter, volume);
 
-        switch (player.Volume)
+        switch (((double)player.Volume) * 100)
         {
             case 0:
                 await ReplyAsync("**Muted** \\🔇");
@@ -508,7 +508,7 @@ public class MusicModule : CherryModuleBase
                 break;
 
             default:
-                await ReplyAsync($"My volume is now set to **{player.Volume}** {(player.Volume >= Cherry.STANDARD_VOLUME * 100 ? "\\🔊" : "\\🔉")}");
+                await ReplyAsync($"My volume is now set to **{player.Volume}** {(player.Volume >= (int)(Cherry.STANDARD_VOLUME * 100) ? "\\🔊" : "\\🔉")}");
                 break;
         }
     }
