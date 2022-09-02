@@ -62,9 +62,9 @@ public class EmbedSender : IEmbedSender
 
             await guild.DefaultChannel.SendMessageAsync(embed: builder.Build());
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Couldn't send the welcome message");
+            _logger.LogError(e.Message + " : " + e.StackTrace ?? "");
         }
     }
 
