@@ -207,11 +207,14 @@ public class CommandHandler : DiscordClientService
                 await arg.Channel.SendMessageAsync("Message received!");
                 return;
             }
+
+            if (!message.HasStringPrefix(_config["prefix"], ref argPos) && !message.HasMentionPrefix(_client.CurrentUser, ref argPos)) return;
         }
-
-        if (!message.HasStringPrefix(await _database.GetPrefixAsync(((SocketGuildUser)message.Author).Guild.Id)
-            ?? _config["prefix"], ref argPos) && !message.HasMentionPrefix(_client.CurrentUser, ref argPos)) return;
-
+        else
+        {
+            if (!message.HasStringPrefix(await _database.GetPrefixAsync(((SocketGuildUser)message.Author).Guild.Id)
+                ?? _config["prefix"], ref argPos) && !message.HasMentionPrefix(_client.CurrentUser, ref argPos)) return;
+        }
 
         var context = new SocketCommandContext(_client, message);
         await _service.ExecuteAsync(context, argPos, _provider);
