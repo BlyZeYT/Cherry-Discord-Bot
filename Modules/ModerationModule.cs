@@ -279,6 +279,6 @@ public class ModerationModule : CherryModuleBase
             return;
         }
 
-        await ReplyAsync($"Pardoned \\💚: **{user.Username} #{user.Discriminator}**");
+        await ReplyAsync($"Unbanned \\💚: **{user.Username} #{user.Discriminator}**");
     }
 }

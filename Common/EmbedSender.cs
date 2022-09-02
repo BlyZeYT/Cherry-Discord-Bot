@@ -97,8 +97,8 @@ public class EmbedSender : IEmbedSender
             .WithTitle($"Information about {guild.Name}")
             .WithThumbnailUrl($"{guild.IconUrl}")
             .AddField("Created at", guild.CreatedAt.ToString("dd/MM/yyyy"), true)
-            .AddField("Members", guild.MemberCount, true)
-            .AddField("Prefix", await _database.GetPrefixAsync(guild.Id) ?? _config["prefix"], false)
+            .AddField("Members", guild.MemberCount)
+            .AddField("Prefix", await _database.GetPrefixAsync(guild.Id) ?? _config["prefix"], true)
             .AddField("Online", guild.Users.Count(x => x.Status is not UserStatus.Offline), true);
 
         await channel.SendMessageAsync(embed: builder.Build());
@@ -199,9 +199,11 @@ public class EmbedSender : IEmbedSender
         var sb = new StringBuilder($"**Currently playing:** [{firstTrack.Title}]({firstTrack.Url})\n");
 
         var remainedQueue = remainedQueueEnumerable.ToArray();
-
-        if (remainedQueue.Length > 0)
+        
+        if (remainedQueue.Length > 1)
         {
+            if (remainedQueue.Length < length) length = remainedQueue.Length;
+
             for (var i = 0; i < length; i++)
             {
                 sb.AppendLine($"**{i + 1}:** [{remainedQueue[i].Title}]({remainedQueue[i].Url})");
@@ -267,7 +269,7 @@ public class EmbedSender : IEmbedSender
             .WithTitle("Information about " + user.Username)
             .AddField("ID", user.Id, true)
             .AddField("Username", user.Username, true)
-            .AddField("Created at", user.CreatedAt.ToString("dd.MM.yyyy"), true)
+            .AddField("Created at", user.CreatedAt.ToString("dd.MM.yyyy"))
             .AddField("Joined at", ((SocketGuildUser)user).JoinedAt.HasValue ? ((SocketGuildUser)user).JoinedAt!.Value.ToString("dd.MM.yyyy") : "", true)
             .AddField("Roles", string.Join(' ', ((SocketGuildUser)user).Roles.Select(x => x.Mention)));
 

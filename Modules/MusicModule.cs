@@ -142,7 +142,7 @@ public class MusicModule : CherryModuleBase
     [Command("skip", RunMode = RunMode.Async)]
     [Alias("s")]
     [Summary("Skips whats currently playing")]
-    [Remarks("skip [queue number]")]
+    [Remarks("skip [number]")]
     [RequireContext(ContextType.Guild)]
     public async Task Skip([Remainder] string trackNumber = "")
     {
@@ -248,9 +248,9 @@ public class MusicModule : CherryModuleBase
     }
 
     [Command("trackinfo", RunMode = RunMode.Async)]
-    [Alias("track")]
+    [Alias("track", "nowplaying")]
     [Summary("Get info about any track in the queue")]
-    [Remarks("trackinfo [position in queue]")]
+    [Remarks("trackinfo [position]")]
     [RequireContext(ContextType.Guild)]
     public async Task TrackInfo([Remainder] string queuePos = "")
     {
@@ -304,7 +304,7 @@ public class MusicModule : CherryModuleBase
 
     [Command("queue", RunMode = RunMode.Async)]
     [Summary("Shows the tracks in queue")]
-    [Remarks("queue <queue length>")]
+    [Remarks("queue <length>")]
     [RequireContext(ContextType.Guild)]
     public async Task Queue([Remainder] string queuePos = "")
     {
@@ -514,11 +514,11 @@ public class MusicModule : CherryModuleBase
     [Command("search", RunMode = RunMode.Async)]
     [Alias("seek")]
     [Summary("Jump to a time value in the video")]
-    [Remarks("search <[hh:][mm:]ss>")]
+    [Remarks("search <hh:mm:ss>")]
     [RequireContext(ContextType.Guild)]
     public async Task Search([Remainder] string? seekTimeStr = null)
     {
-        if (!TimeSpan.TryParseExact(seekTimeStr, "[hh:mm:]ss", null, out var timestamp))
+        if (!TimeSpan.TryParseExact(seekTimeStr, "hh:mm:ss", null, out var timestamp))
         {
             await ReplyAsync("Please enter a valid timestamp");
             return;

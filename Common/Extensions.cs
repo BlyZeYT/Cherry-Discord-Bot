@@ -53,10 +53,22 @@ public static class Extensions
 
     public static async Task<string> GetLyrics(this LavaTrack track)
     {
-        string lyrics = await LyricsResolver.SearchGeniusAsync(track);
+        string lyrics = "";
+
+        try
+        {
+            lyrics = await LyricsResolver.SearchGeniusAsync(track);
+        }
+        catch (Exception) { }
 
         if (string.IsNullOrWhiteSpace(lyrics))
-            lyrics = await LyricsResolver.SearchOvhAsync(track);
+        {
+            try
+            {
+                lyrics = await LyricsResolver.SearchOvhAsync(track);
+            }
+            catch (Exception) { }
+        }
 
         return lyrics;
     }
