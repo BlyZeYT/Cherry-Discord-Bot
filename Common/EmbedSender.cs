@@ -155,21 +155,24 @@ public class EmbedSender : IEmbedSender
 
     public async Task SendTracksEnqueuedAsync(IMessageChannel channel, LavaTrack[] tracks)
     {
-        EmbedBuilder builder;
-
         if (tracks.Length is 1)
         {
-            var track = tracks[0];
-
-            builder = new CherryEmbedBuilder()
-                .WithTitle("Enqueued \\✅")
-                .WithDescription($"**[{track.Title}]({track.Url})**");
+            await SendTrackEnqueuedAsync(channel, tracks[0]);
         }
         else
         {
-            builder = new CherryEmbedBuilder()
+            var builder = new CherryEmbedBuilder()
                 .WithTitle($"Enqueued {tracks.Length} tracks \\✅");
+
+            await channel.SendMessageAsync(embed: builder.Build());
         }
+    }
+
+    public async Task SendTrackDequeuedAsync(IMessageChannel channel, LavaTrack track)
+    {
+        var builder = new CherryEmbedBuilder()
+            .WithTitle("Dequeued \\🚫")
+            .WithDescription($"**[{track.Title}]({track.Url})**");
 
         await channel.SendMessageAsync(embed: builder.Build());
     }
@@ -487,6 +490,8 @@ public interface IEmbedSender
     public Task SendTrackEnqueuedAsync(IMessageChannel channel, LavaTrack track);
 
     public Task SendTracksEnqueuedAsync(IMessageChannel channel, LavaTrack[] tracks);
+
+    public Task SendTrackDequeuedAsync(IMessageChannel channel, LavaTrack track);
 
     public Task SendTrackInfoAsync(IMessageChannel channel, LavaTrack track);
 

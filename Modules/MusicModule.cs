@@ -204,7 +204,7 @@ public class MusicModule : CherryModuleBase
                 return;
             }
 
-            await ReplyAsync($"Dequeued [{removedTrack.Title}]({removedTrack.Url})");
+            await _embed.SendTrackDequeuedAsync(player.TextChannel, removedTrack);
         }
         else await ReplyAsync("I'm not playing any music to skip");
     }
