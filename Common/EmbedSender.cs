@@ -91,7 +91,7 @@ public class EmbedSender : IEmbedSender
         await SendServerInfoAsync(cherry.DefaultChannel, guild);
     }
 
-    public async Task SendServerInfoAsync(ITextChannel channel, SocketGuild guild)
+    public async Task SendServerInfoAsync(IMessageChannel channel, SocketGuild guild)
     {
         var builder = new CherryEmbedBuilder()
             .WithTitle($"Information about {guild.Name}")
@@ -104,7 +104,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendTrackStartedAsync(ITextChannel channel, LavaTrack track)
+    public async Task SendTrackStartedAsync(IMessageChannel channel, LavaTrack track)
     {
         var builder = new CherryEmbedBuilder()
                 .WithTitle("Now playing \\🎶")
@@ -116,7 +116,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendTrackStoppedAsync(ITextChannel channel, LavaTrack track)
+    public async Task SendTrackStoppedAsync(IMessageChannel channel, LavaTrack track)
     {
         var builder = new CherryEmbedBuilder()
                     .WithThumbnailUrl(await track.GetArtworkLinkAsync())
@@ -126,7 +126,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendQueueCompletedAsync(ITextChannel channel, LavaTrack track)
+    public async Task SendQueueCompletedAsync(IMessageChannel channel, LavaTrack track)
     {
         var builder = new CherryEmbedBuilder()
                         .WithThumbnailUrl(await track.GetArtworkLinkAsync())
@@ -136,15 +136,15 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendTrackRepeatedAsync(ITextChannel channel, LavaTrack track) => await channel.SendMessageAsync($"**Repeated** {track.Title} 🔂");
+    public async Task SendTrackRepeatedAsync(IMessageChannel channel, LavaTrack track) => await channel.SendMessageAsync($"**Repeated** {track.Title} 🔂");
 
-    public async Task SendTrackGotStuckAsync(ITextChannel channel, LavaTrack track) => await channel.SendMessageAsync($"Skipped \\⏭️:**{track.Title}** because it got stuck!");
+    public async Task SendTrackGotStuckAsync(IMessageChannel channel, LavaTrack track) => await channel.SendMessageAsync($"Skipped \\⏭️:**{track.Title}** because it got stuck!");
 
-    public async Task SendTrackThrewExceptionAsync(ITextChannel channel, LavaTrack track, LavaException exception) => await channel.SendMessageAsync($"**Skipped \\⏭️:** {track.Title}\n**Reason \\⛔:** {exception.Message}");
+    public async Task SendTrackThrewExceptionAsync(IMessageChannel channel, LavaTrack track, LavaException exception) => await channel.SendMessageAsync($"**Skipped \\⏭️:** {track.Title}\n**Reason \\⛔:** {exception.Message}");
 
-    public async Task SendTrackInvalidAsync(ITextChannel channel) => await channel.SendMessageAsync("Next item in queue is not a track. \\❌");
+    public async Task SendTrackInvalidAsync(IMessageChannel channel) => await channel.SendMessageAsync("Next item in queue is not a track. \\❌");
 
-    public async Task SendTrackEnqueuedAsync(ITextChannel channel, LavaTrack track)
+    public async Task SendTrackEnqueuedAsync(IMessageChannel channel, LavaTrack track)
     {
         var builder = new CherryEmbedBuilder()
                 .WithTitle("Enqueued \\✅")
@@ -153,7 +153,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendTracksEnqueuedAsync(ITextChannel channel, LavaTrack[] tracks)
+    public async Task SendTracksEnqueuedAsync(IMessageChannel channel, LavaTrack[] tracks)
     {
         EmbedBuilder builder;
 
@@ -174,7 +174,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendTrackInfoAsync(ITextChannel channel, LavaTrack track)
+    public async Task SendTrackInfoAsync(IMessageChannel channel, LavaTrack track)
     {
         var artwork = await track.GetArtworkLinkAsync();
         var (source, sourceLink) = await track.GetSourceInfo();
@@ -192,7 +192,7 @@ public class EmbedSender : IEmbedSender
 
     }
 
-    public async Task SendQueueAsync(ITextChannel channel, LavaTrack[] fullQueue, int length)
+    public async Task SendQueueAsync(IMessageChannel channel, LavaTrack[] fullQueue, int length)
     {
         var (firstTrack, remainedQueueEnumerable) = fullQueue.GetFirstAndRemainder();
 
@@ -213,7 +213,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendLyricsAsync(ITextChannel channel, LavaTrack track)
+    public async Task SendLyricsAsync(IMessageChannel channel, LavaTrack track)
     {
         string lyrics = await track.GetLyrics();
 
@@ -225,7 +225,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendRedditPostAsync(ITextChannel channel, string imageUrl, string title, string url, string comments, string upvotes)
+    public async Task SendRedditPostAsync(IMessageChannel channel, string imageUrl, string title, string url, string comments, string upvotes)
     {
         var builder = new CherryEmbedBuilder()
             .WithImageUrl(imageUrl)
@@ -236,7 +236,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendCoinflipAsync(ITextChannel channel, bool head)
+    public async Task SendCoinflipAsync(IMessageChannel channel, bool head)
     {
         var builder = new CherryEmbedBuilder()
             .WithThumbnailUrl(head ? "https://i.imgur.com/tBQQSIZ.png" : "https://i.imgur.com/nEsC24S.png");
@@ -244,7 +244,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendCherryInfoAsync(ITextChannel channel, SocketGuild guild)
+    public async Task SendCherryInfoAsync(IMessageChannel channel, SocketGuild guild)
     {
         var builder = new CherryEmbedBuilder()
             .WithTitle(@"Information about me \🍒")
@@ -260,7 +260,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendUserInfoAsync(ITextChannel channel, SocketUser user)
+    public async Task SendUserInfoAsync(IMessageChannel channel, SocketUser user)
     {
         var builder = new CherryEmbedBuilder()
             .WithThumbnailUrl(user.GetAvatarUrl(ImageFormat.Auto, 2048) ?? user.GetDefaultAvatarUrl())
@@ -274,7 +274,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendBotStatsAsync(ITextChannel channel)
+    public async Task SendBotStatsAsync(IMessageChannel channel)
     {
         var builder = new CherryEmbedBuilder()
             .WithAuthor(x =>
@@ -295,7 +295,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendNewsAsync(ITextChannel channel, string title, string message)
+    public async Task SendNewsAsync(IMessageChannel channel, string title, string message)
     {
         var builder = new CherryEmbedBuilder()
             .WithTitle(title)
@@ -304,7 +304,7 @@ public class EmbedSender : IEmbedSender
         await channel.SendMessageAsync(embed: builder.Build());
     }
 
-    public async Task SendBanlistAsync(ITextChannel channel, IEnumerable<RestBan> banlist)
+    public async Task SendBanlistAsync(IMessageChannel channel, IEnumerable<RestBan> banlist)
     {
         var sb = new StringBuilder();
 
@@ -466,45 +466,45 @@ public interface IEmbedSender
 
     public Task LeftGuildAsync(SocketGuild guild);
 
-    public Task SendServerInfoAsync(ITextChannel channel, SocketGuild guild);
+    public Task SendServerInfoAsync(IMessageChannel channel, SocketGuild guild);
 
-    public Task SendTrackStartedAsync(ITextChannel channel, LavaTrack track);
+    public Task SendTrackStartedAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendTrackStoppedAsync(ITextChannel channel, LavaTrack track);
+    public Task SendTrackStoppedAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendQueueCompletedAsync(ITextChannel channel, LavaTrack track);
+    public Task SendQueueCompletedAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendTrackRepeatedAsync(ITextChannel channel, LavaTrack track);
+    public Task SendTrackRepeatedAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendTrackGotStuckAsync(ITextChannel channel, LavaTrack track);
+    public Task SendTrackGotStuckAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendTrackThrewExceptionAsync(ITextChannel channel, LavaTrack track, LavaException exception);
+    public Task SendTrackThrewExceptionAsync(IMessageChannel channel, LavaTrack track, LavaException exception);
 
-    public Task SendTrackInvalidAsync(ITextChannel channel);
+    public Task SendTrackInvalidAsync(IMessageChannel channel);
 
-    public Task SendTrackEnqueuedAsync(ITextChannel channel, LavaTrack track);
+    public Task SendTrackEnqueuedAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendTracksEnqueuedAsync(ITextChannel channel, LavaTrack[] tracks);
+    public Task SendTracksEnqueuedAsync(IMessageChannel channel, LavaTrack[] tracks);
 
-    public Task SendTrackInfoAsync(ITextChannel channel, LavaTrack track);
+    public Task SendTrackInfoAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendQueueAsync(ITextChannel channel, LavaTrack[] fullQueue, int length);
+    public Task SendQueueAsync(IMessageChannel channel, LavaTrack[] fullQueue, int length);
 
-    public Task SendLyricsAsync(ITextChannel channel, LavaTrack track);
+    public Task SendLyricsAsync(IMessageChannel channel, LavaTrack track);
 
-    public Task SendRedditPostAsync(ITextChannel channel, string imageUrl, string title, string url, string comments, string upvotes);
+    public Task SendRedditPostAsync(IMessageChannel channel, string imageUrl, string title, string url, string comments, string upvotes);
 
-    public Task SendCoinflipAsync(ITextChannel channel, bool head);
+    public Task SendCoinflipAsync(IMessageChannel channel, bool head);
 
-    public Task SendCherryInfoAsync(ITextChannel channel, SocketGuild guild);
+    public Task SendCherryInfoAsync(IMessageChannel channel, SocketGuild guild);
 
-    public Task SendUserInfoAsync(ITextChannel channel, SocketUser user);
+    public Task SendUserInfoAsync(IMessageChannel channel, SocketUser user);
 
-    public Task SendBotStatsAsync(ITextChannel channel);
+    public Task SendBotStatsAsync(IMessageChannel channel);
 
-    public Task SendNewsAsync(ITextChannel channel, string title, string message);
+    public Task SendNewsAsync(IMessageChannel channel, string title, string message);
 
-    public Task SendBanlistAsync(ITextChannel channel, IEnumerable<RestBan> banlist);
+    public Task SendBanlistAsync(IMessageChannel channel, IEnumerable<RestBan> banlist);
 
     public Task<bool> TrySendContactDMAsync(SocketUser user);
 
