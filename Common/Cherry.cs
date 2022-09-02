@@ -1,11 +1,13 @@
 ﻿namespace Cherry.Common;
 
-using System.Diagnostics;
+using Discord.WebSocket;
 using Victoria.Filters;
 
 public static class Cherry
 {
-    public const ulong SERVER = 987877607116771338;
+    public const ulong GUILD_ID = 987877607116771338;
+
+    public static SocketGuild? Server { get; set; }
 
     public const string NOT_FOUND = "https://i.imgur.com/O5DNR57.png";
 

@@ -74,7 +74,7 @@ public class EmbedSender : IEmbedSender
     {
         await SendWelcomeAsync(guild);
 
-        var cherry = _client.GetGuild(Cherry.SERVER);
+        var cherry = Cherry.Server;
 
         if (cherry is null)
         {
@@ -82,13 +82,21 @@ public class EmbedSender : IEmbedSender
             return;
         }
 
-        await cherry.DefaultChannel.SendMessageAsync(@"Joined a new server \🥳");
-        await SendServerInfoAsync(cherry.DefaultChannel, guild);
+        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()))
+        {
+            try
+            {
+                await channel.SendMessageAsync(@"Joined a new server \🥳");
+                await SendServerInfoAsync(channel, guild);
+                break;
+            }
+            catch (Exception) { continue; }
+        }
     }
 
     public async Task LeftGuildAsync(SocketGuild guild)
     {
-        var cherry = _client.GetGuild(Cherry.SERVER);
+        var cherry = _client.GetGuild(Cherry.GUILD_ID);
 
         if (cherry is null)
         {
@@ -96,8 +104,16 @@ public class EmbedSender : IEmbedSender
             return;
         }
 
-        await cherry.DefaultChannel.SendMessageAsync(@"Lefted a server \🥲");
-        await SendServerInfoAsync(cherry.DefaultChannel, guild);
+        foreach (var channel in guild.TextChannels.Where(x => x.IsStandardTextChannel()))
+        {
+            try
+            {
+                await channel.SendMessageAsync(@"Lefted a server \🥲");
+                await SendServerInfoAsync(channel, guild);
+                break;
+            }
+            catch (Exception) { continue; }
+        }
     }
 
     public async Task SendServerInfoAsync(IMessageChannel channel, SocketGuild guild)

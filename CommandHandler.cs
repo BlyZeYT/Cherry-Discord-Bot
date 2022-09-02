@@ -1,5 +1,6 @@
 ﻿namespace Cherry;
 
+using BackgroundTimer;
 using Cherry.Common;
 using Discord;
 using Discord.Addons.Hosting;
@@ -42,6 +43,7 @@ public class CommandHandler : DiscordClientService
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+        _client.Ready += Startup;
         _client.Ready += SetGame;
         _client.Ready += ConnectLavalink;
         _client.JoinedGuild += OnJoinedGuild;
@@ -67,7 +69,17 @@ public class CommandHandler : DiscordClientService
         await _service.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
     }
 
-    private async Task SetGame() => await _client.SetGameAsync("BlyZeHD's Quality Content", null, ActivityType.Watching);
+    private Task Startup()
+    {
+        Cherry.Server = _client.GetGuild(Cherry.GUILD_ID);
+
+        new BackgroundTimer().Start(TimeSpan.FromSeconds(30), () => Cherry.Server = _client.GetGuild(Cherry.GUILD_ID));
+
+        return Task.CompletedTask;
+    }
+
+    private async Task SetGame()
+        => await _client.SetGameAsync("BlyZeHD's Quality Content", null, ActivityType.Watching);
 
     private async Task ConnectLavalink()
     {
