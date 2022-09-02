@@ -25,7 +25,7 @@ public class MusicHelper : IMusicHelper
         if (!_lavaNode.HasPlayer(guild))
         {
             player = await _lavaNode.JoinAsync(voiceChannel, textChannel);
-            await player.ApplyFilterAsync(Cherry.EmptyFilter, Cherry.STANDARD_VOLUME);
+            await player.UpdateVolumeAsync(Cherry.STANDARD_VOLUME);
         }
         else player = _lavaNode.GetPlayer(guild);
 
