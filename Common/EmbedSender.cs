@@ -1,6 +1,7 @@
 ﻿namespace Cherry.Common;
 
 using Discord;
+using Discord.Addons.Hosting;
 using Discord.Commands;
 using Discord.Rest;
 using Discord.WebSocket;
@@ -14,11 +15,11 @@ public class EmbedSender : IEmbedSender
 {
     private readonly IConfiguration _config;
     private readonly IDatabase _database;
-    private readonly ILogger _logger;
+    private readonly ILogger<DiscordClientService> _logger;
     private readonly DiscordSocketClient _client;
     private readonly CommandService _service;
 
-    public EmbedSender(IConfiguration config, IDatabase database, ILogger logger, DiscordSocketClient client, CommandService service)
+    public EmbedSender(IConfiguration config, IDatabase database, ILogger<DiscordClientService> logger, DiscordSocketClient client, CommandService service)
     {
         _config = config;
         _database = database;

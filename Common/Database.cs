@@ -1,5 +1,6 @@
 ﻿namespace Cherry.Common;
 
+using Discord.Addons.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MySqlConnector;
@@ -7,10 +8,10 @@ using System.Diagnostics;
 
 public class Database : IDatabase
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<DiscordClientService> _logger;
     private readonly IConfiguration _config;
 
-    public Database(ILogger logger, IConfiguration config)
+    public Database(ILogger<DiscordClientService> logger, IConfiguration config)
     {
         _logger = logger;
         _config = config;
