@@ -1,5 +1,6 @@
 ﻿namespace Cherry.Common;
 
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,9 +9,13 @@ using Victoria.Resolvers;
 
 public static class Extensions
 {
+    public static void LogCommandExecutionError(this ILogger logger, IResult error) => logger.LogError($"Command Execution Error: {(error.Error.HasValue ? error.Error.Value : error)} -> {error.ErrorReason}");
+
     public static void LogDatabaseError(this ILogger logger, Exception? exception, string methodName) => logger.LogError(exception, $"Database Error in: {methodName}", 0);
 
     public static void LogCherryServerError(this ILogger logger) => logger.LogError("Can't get Cherry Server", 1);
+
+    public static void LogLavalinkConnected(this ILogger logger, bool couldConnect) => logger.LogError($"Lavalink connection {(couldConnect ? "successfully established" : "could't be established")}");
 
     public static void LogLavaTrackStuckError(this ILogger logger, LavaTrack track, TimeSpan threshold) => logger.LogError($"Track: {track.Title} got stuck for {threshold.TotalMilliseconds}ms", 2);
 

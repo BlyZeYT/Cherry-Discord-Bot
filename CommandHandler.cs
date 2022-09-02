@@ -71,7 +71,12 @@ public class CommandHandler : DiscordClientService
 
     private async Task ConnectLavalink()
     {
-        if (!_lavaNode.IsConnected) await _lavaNode.ConnectAsync();
+        if (!_lavaNode.IsConnected)
+        {
+            await _lavaNode.ConnectAsync();
+
+            _logger.LogLavalinkConnected(_lavaNode.IsConnected);
+        }
     }
 
     private async Task OnJoinedGuild(SocketGuild arg)
@@ -223,7 +228,7 @@ public class CommandHandler : DiscordClientService
     private async Task OnCommandExecuted(Optional<CommandInfo> command, ICommandContext _, IResult result)
     {
         if (command.IsSpecified && !result.IsSuccess)
-            await Task.Run(() => _logger.LogError($"Command Execution Error: {(result.Error.HasValue ? result.Error.Value : result)} -> {result.ErrorReason}"));
+            await Task.Run(() => _logger.LogCommandExecutionError(result));
     }
 
     private async Task OnButtonExecuted(SocketMessageComponent arg)

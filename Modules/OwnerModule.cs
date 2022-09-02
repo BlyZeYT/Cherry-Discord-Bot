@@ -33,7 +33,7 @@ public class OwnerModule : CherryModuleBase
             foreach (var guild in guilds)
             {
                 if (guild is not null)
-                    await _embed.SendServerInfoAsync((ITextChannel)Context.Channel, guild);
+                    await _embed.SendServerInfoAsync(Context.Channel, guild);
             }
         }
         else
@@ -52,7 +52,7 @@ public class OwnerModule : CherryModuleBase
                 return;
             }
 
-            await _embed.SendServerInfoAsync((ITextChannel)Context.Channel, guild);
+            await _embed.SendServerInfoAsync(Context.Channel, guild);
         }
     }
 

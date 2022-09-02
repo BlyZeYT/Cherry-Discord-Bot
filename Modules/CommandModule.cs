@@ -50,28 +50,28 @@ public class CommandModule : CherryModuleBase
     [Summary("Get the stats of the bot")]
     [Remarks("stats")]
     [RequireContext(ContextType.Guild | ContextType.DM)]
-    public async Task Stats() => await _embed.SendBotStatsAsync((ITextChannel)Context.Channel);
+    public async Task Stats() => await _embed.SendBotStatsAsync(Context.Channel);
 
     [Command("info", RunMode = RunMode.Async)]
     [Alias("userinfo")]
     [Summary("Get information about you or any other user")]
     [Remarks("info [@user]")]
     [RequireContext(ContextType.Guild)]
-    public async Task UserInfo([Remainder] SocketGuildUser? user = null) => await _embed.SendUserInfoAsync((ITextChannel)Context.Channel, user ?? Context.User);
+    public async Task UserInfo([Remainder] SocketGuildUser? user = null) => await _embed.SendUserInfoAsync(Context.Channel, user ?? Context.User);
 
     [Command("server", RunMode = RunMode.Async)]
     [Alias("guild")]
     [Summary("Get information about the server")]
     [Remarks("server")]
     [RequireContext(ContextType.Guild)]
-    public async Task ServerInfo() => await _embed.SendServerInfoAsync((ITextChannel)Context.Channel, Context.Guild);
+    public async Task ServerInfo() => await _embed.SendServerInfoAsync(Context.Channel, Context.Guild);
 
     [Command("bot", RunMode = RunMode.Async)]
     [Alias("botinfo")]
     [Summary("Get information about the bot")]
     [Remarks("bot")]
     [RequireContext(ContextType.Guild | ContextType.DM)]
-    public async Task BotInfo() => await _embed.SendCherryInfoAsync((ITextChannel)Context.Channel, Context.Guild);
+    public async Task BotInfo() => await _embed.SendCherryInfoAsync(Context.Channel, Context.Guild);
 
     [Command("reddit", RunMode = RunMode.Async)]
     [Alias("meme")]
@@ -102,13 +102,16 @@ public class CommandModule : CherryModuleBase
             var array = JArray.Parse(result);
             var post = JObject.Parse(array[0]["data"]!["children"]![0]!["data"]!.ToString());
 
-            if (post["over_18"]?.ToString() is "True" && !((ITextChannel)Context.Channel).IsNsfw)
+            if (post["over_18"]?.ToString() is "True" && !Context.Channel.IsDMChannel())
             {
-                await ReplyAsync("The subreddit contains NSFW content, while this is a SFW channel!");
-                return;
+                if (((ITextChannel)Context.Channel).IsNsfw)
+                {
+                    await ReplyAsync("The subreddit contains NSFW content, while this is a SFW channel!");
+                    return;
+                }
             }
 
-            await _embed.SendRedditPostAsync((ITextChannel)Context.Channel, $"{post["url"]}", $"{post["title"]}", $"{post["permalink"]}", $"{post["num_comments"]}", $"{post["ups"]}");
+            await _embed.SendRedditPostAsync(Context.Channel, $"{post["url"]}", $"{post["title"]}", $"{post["permalink"]}", $"{post["num_comments"]}", $"{post["ups"]}");
         }
     }
 
@@ -116,5 +119,5 @@ public class CommandModule : CherryModuleBase
     [Summary("Flip a coin")]
     [Remarks("coinflip")]
     [RequireContext(ContextType.Guild | ContextType.DM)]
-    public async Task Coinflip() => await _embed.SendCoinflipAsync((ITextChannel)Context.Channel, new Random().Next(0, 2) == 1);
+    public async Task Coinflip() => await _embed.SendCoinflipAsync(Context.Channel, new Random().Next(0, 2) == 1);
 }
