@@ -27,7 +27,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Plays videos, playlists or streams from YouTube and Twitch")]
     [Remarks("play <search/link>")]
     [RequireContext(ContextType.Guild)]
-    public async Task Play([Remainder] string? searchQuery = null)
+    public async Task Play([Remainder] string searchQuery = "")
         => await _music.PlayMusicAsync((ITextChannel)Context.Channel,
             (IVoiceState)Context.User, Context.Guild, searchQuery, Source.YouTube);
 
@@ -36,7 +36,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Plays tracks from Youtube Music")]
     [Remarks("ytmusic <search/link>")]
     [RequireContext(ContextType.Guild)]
-    public async Task YouTubeMusic([Remainder] string? searchQuery = null)
+    public async Task YouTubeMusic([Remainder] string searchQuery = "")
         => await _music.PlayMusicAsync((ITextChannel)Context.Channel,
             (IVoiceState)Context.User, Context.Guild, searchQuery, Source.YouTubeMusic);
 
@@ -45,7 +45,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Plays tracks from Soundcloud")]
     [Remarks("soundcloud <search/link>")]
     [RequireContext(ContextType.Guild)]
-    public async Task Soundcloud([Remainder] string? searchQuery = null)
+    public async Task Soundcloud([Remainder] string searchQuery = "")
         => await _music.PlayMusicAsync((ITextChannel)Context.Channel,
             (IVoiceState)Context.User, Context.Guild, searchQuery, Source.Soundcloud);
 
@@ -144,7 +144,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Skips whats currently playing")]
     [Remarks("skip [queue number]")]
     [RequireContext(ContextType.Guild)]
-    public async Task Skip([Remainder] string? trackNumber = null)
+    public async Task Skip([Remainder] string trackNumber = "")
     {
         var voiceState = (IVoiceState)Context.User;
 
@@ -252,7 +252,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Get info about any track in the queue")]
     [Remarks("trackinfo [position in queue]")]
     [RequireContext(ContextType.Guild)]
-    public async Task TrackInfo([Remainder] string? queuePos = null)
+    public async Task TrackInfo([Remainder] string queuePos = "")
     {
         if (!_lavaNode.HasPlayer(Context.Guild))
         {
@@ -306,7 +306,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Shows the tracks in queue")]
     [Remarks("queue <queue length>")]
     [RequireContext(ContextType.Guild)]
-    public async Task Queue([Remainder] string? queuePos = null)
+    public async Task Queue([Remainder] string queuePos = "")
     {
         if (!_lavaNode.HasPlayer(Context.Guild))
         {
@@ -429,7 +429,7 @@ public class MusicModule : CherryModuleBase
     [Summary("Get the bots volume level or change it to a value between 0 and 200")]
     [Remarks("volume [amount (0 - 200)]")]
     [RequireContext(ContextType.Guild)]
-    public async Task Volume([Remainder] string? volumeStr = null)
+    public async Task Volume([Remainder] string volumeStr = "")
     {
         var voiceState = (IVoiceState)Context.User;
 
@@ -487,7 +487,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        var volume = volumeVal / 100d;
+        var volume = ((double)volumeVal) / 100;
 
         if (volume is < Cherry.MIN_VOLUME or > Cherry.MAX_VOLUME and not Cherry.EARRAPE_VOLUME)
         {
@@ -617,7 +617,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        await player.ApplyFilterAsync(Cherry.EmptyFilter);
+        await player.ApplyFilterAsync(Cherry.EmptyFilter, ((double)player.Volume) / 100);
         await ReplyAsync("Removed all filters");
     }
 
@@ -664,7 +664,7 @@ public class MusicModule : CherryModuleBase
             _ => Cherry.NightcoreFilterMedium,
         };
 
-        await player.ApplyFilterAsync(filter);
+        await player.ApplyFilterAsync(filter, ((double)player.Volume) / 100);
         await ReplyAsync("Applied nightcore filter on **"
             + (level is "" ? "MEDIUM" : level.ToUpper()) + "**");
     }
@@ -712,7 +712,7 @@ public class MusicModule : CherryModuleBase
             _ => Cherry.DaycoreFilterMedium,
         };
 
-        await player.ApplyFilterAsync(filter);
+        await player.ApplyFilterAsync(filter, ((double)player.Volume) / 100);
         await ReplyAsync("Applied daycore filter on **"
             + (level is "" ? "MEDIUM" : level.ToUpper()) + "**");
     }
@@ -760,7 +760,7 @@ public class MusicModule : CherryModuleBase
             _ => Cherry.SmoothingFilterMedium,
         };
 
-        await player.ApplyFilterAsync(filter);
+        await player.ApplyFilterAsync(filter, ((double)player.Volume) / 100);
         await ReplyAsync("Applied smoothing filter on **"
             + (level is "" ? "MEDIUM" : level.ToUpper()) + "**");
     }
@@ -800,7 +800,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        await player.ApplyFilterAsync(Cherry.EightDFilter);
+        await player.ApplyFilterAsync(Cherry.EightDFilter, ((double)player.Volume) / 100);
         await ReplyAsync("Applied 8D filter");
     }
 
