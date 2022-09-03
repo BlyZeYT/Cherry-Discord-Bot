@@ -523,7 +523,7 @@ public class MusicModule : CherryModuleBase
     [RequireContext(ContextType.Guild)]
     public async Task Search([Remainder] string? seekTimeStr = null)
     {
-        if (!TimeSpan.TryParseExact(seekTimeStr, "hh:mm:ss", null, out var timestamp))
+        if (!TimeSpan.TryParseExact(seekTimeStr, "hh\\:mm\\:ss", null, out var timestamp))
         {
             await ReplyAsync("Please enter a valid timestamp");
             return;
