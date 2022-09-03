@@ -589,7 +589,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        await ReplyAsync($"Jumped to {player.Track.GetFormattedPosition()}");
+        await ReplyAsync($"Jumped to {timestamp.GetFormattedPosition()}");
     }
 
     [Command("reset", RunMode = RunMode.Async)]

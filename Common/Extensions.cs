@@ -75,12 +75,9 @@ public static class Extensions
     }
 
     public static string GetFormattedDuration(this LavaTrack track)
-        => FormattedTrackTime(track.Duration);
+        => GetFormattedPosition(track.Duration);
 
-    public static string GetFormattedPosition(this LavaTrack track)
-        => FormattedTrackTime(track.Position);
-
-    private static string FormattedTrackTime(this TimeSpan duration)
+    public static string GetFormattedPosition(this TimeSpan duration)
     {
         var duration2 = duration;
 
