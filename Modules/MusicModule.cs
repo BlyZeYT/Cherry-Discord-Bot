@@ -519,14 +519,20 @@ public class MusicModule : CherryModuleBase
     [Command("search", RunMode = RunMode.Async)]
     [Alias("seek")]
     [Summary("Jump to a time value in the video")]
-    [Remarks("search <hh:mm:ss>")]
+    [Remarks("search <[[hh:]mm:]ss>")]
     [RequireContext(ContextType.Guild)]
-    public async Task Search([Remainder] string? seekTimeStr = null)
+    public async Task Search([Remainder] string seekTimeStr = "")
     {
         if (!TimeSpan.TryParseExact(seekTimeStr, "hh\\:mm\\:ss", null, out var timestamp))
         {
-            await ReplyAsync("Please enter a valid timestamp");
-            return;
+            if (!TimeSpan.TryParseExact(seekTimeStr, "mm\\:ss", null, out timestamp))
+            {
+                if (!TimeSpan.TryParseExact(seekTimeStr, "ss", null, out timestamp))
+                {
+                    await ReplyAsync("Please enter a valid timestamp");
+                    return;
+                }
+            }
         }
 
         var voiceState = (IVoiceState)Context.User;
@@ -559,7 +565,7 @@ public class MusicModule : CherryModuleBase
 
         if (player.Track.IsStream)
         {
-            await ReplyAsync("I can't repeat a livestream");
+            await ReplyAsync("I can't search in a livestream");
             return;
         }
 
@@ -577,13 +583,13 @@ public class MusicModule : CherryModuleBase
 
         await player.SeekAsync(timestamp);
         
-        if (timestamp.Seconds == 0)
+        if (timestamp == TimeSpan.Zero)
         {
             await ReplyAsync("Jumped to the beginning");
             return;
         }
 
-        await ReplyAsync($"Jumped to {player.Track.GetFormattedDuration()}");
+        await ReplyAsync($"Jumped to {player.Track.GetFormattedPosition()}");
     }
 
     [Command("reset", RunMode = RunMode.Async)]

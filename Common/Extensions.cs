@@ -73,14 +73,20 @@ public static class Extensions
 
         return lyrics;
     }
-    
+
     public static string GetFormattedDuration(this LavaTrack track)
+        => FormattedTrackTime(track.Duration);
+
+    public static string GetFormattedPosition(this LavaTrack track)
+        => FormattedTrackTime(track.Position);
+
+    private static string FormattedTrackTime(this TimeSpan duration)
     {
-        var duration = track.Duration;
+        var duration2 = duration;
 
         return duration.Hours > 0
-            ? track.Duration.ToString(@"hh\:mm\:ss") + " h"
-            : duration.Minutes > 0 ? track.Duration.ToString(@"mm\:ss") + " m" : track.Duration.ToString("ss") + " s";
+            ? duration2.ToString(@"hh\:mm\:ss") + " h"
+            : duration.Minutes > 0 ? duration2.ToString(@"mm\:ss") + " m" : duration2.ToString("ss") + " s";
     }
 
     public static bool IsDMChannel(this ISocketMessageChannel channel) => channel is SocketDMChannel;
