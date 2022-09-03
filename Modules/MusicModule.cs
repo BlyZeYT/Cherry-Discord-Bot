@@ -569,7 +569,7 @@ public class MusicModule : CherryModuleBase
             return;
         }
 
-        if (player.Track.Duration >= timestamp)
+        if (player.Track.Duration.TotalSeconds >= timestamp.TotalSeconds)
         {
             await ReplyAsync("The timespan is longer than the track itself");
             return;
