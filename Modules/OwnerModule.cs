@@ -28,10 +28,12 @@ public class OwnerModule : CherryModuleBase
     {
         if (string.IsNullOrWhiteSpace(guildIdStr))
         {
-            var guilds = _client.Guilds;
+            SocketGuild? guild;
 
-            foreach (var guild in guilds)
+            await foreach (var guildId in _database.GetAllGuildsAsync())
             {
+                guild = _client.GetGuild(guildId);
+
                 if (guild is not null)
                     await _embed.SendServerInfoAsync(Context.Channel, guild);
             }
