@@ -1,7 +1,6 @@
 ﻿namespace Cherry.Modules;
 
 using Cherry.Common;
-using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
